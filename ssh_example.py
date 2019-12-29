@@ -3,9 +3,9 @@
 """
 General pExpect module example to present command extract.
 It has been tested against Cisco ACI to ease command extract
-which sometimes could be an enormous exaercise
+which sometimes could be an enormous exercise
 if we were to extract the same with i.e. Ansible and API calls.
-The below presents extract and command run on my home Cisco router and Pi's Bash shell respectively.
+The below presents extract and command run against/on my home Cisco router and Pi's Bash shell respectively.
 """
 
 import sys
