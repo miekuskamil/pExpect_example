@@ -48,7 +48,7 @@ CHILD.sendline('show ip int brief')
 CHILD.expect('.*#.*')
 
 newlines()
-CHILD.sendline('show run')
+CHILD.sendline('show process cpu history')
 CHILD.expect('.*#.*')
 
 newlines()
