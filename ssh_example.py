@@ -11,7 +11,6 @@ The below presents extract and command run against/on my home Cisco router and P
 import sys
 import getpass
 import subprocess
-import argparse
 import pexpect
 import yaml
 import signal
@@ -75,5 +74,4 @@ if __name__ == "__main__":
         commands = yaml.load(file, Loader=yaml.FullLoader)
         ip, username, password = checkInput()
         execute(ip, username, password)
-
-    file.close()
+        file.close()
