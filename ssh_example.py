@@ -11,7 +11,14 @@ The below presents extract and command run against/on my home Cisco router and P
 import sys
 import getpass
 import subprocess
+import argparse
 import pexpect
+import yaml
+import signal
+
+
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)  # IOError: Broken pipe
+signal.signal(signal.SIGINT, signal.SIG_DFL)  # KeyboardInterrupt: Ctrl-C
 
 
 def checkInput():
@@ -49,35 +56,24 @@ def execute(*args):
 
     CHILD = pexpect.spawn('ssh -c aes256-cbc %s -l %s' % (args[0], args[1]))
     CHILD.logfile_read = sys.stdout.buffer
-
     CHILD.expect('.*assword:.*')
     CHILD.sendline(args[2])
     CHILD.expect('.*#.*')
 
-    newlines()
-    CHILD.sendline('terminal length 0')
-    CHILD.expect('.*#.*')
 
-    newlines()
-    CHILD.sendline('show version')
-    CHILD.expect('.*#.*')
-
-    newlines()
-    CHILD.sendline('show ip int brief')
-    CHILD.expect('.*#.*')
-
-    newlines()
-    CHILD.sendline('show process cpu history')
-    CHILD.expect('.*#.*')
-
-    newlines()
-    subprocess.call("ls -la", shell=True)
-    newlines()
+    for command in commands:
+        CHILD.sendline(command)
+        CHILD.expect('.*#.*')
+        newlines()
 
     CHILD.close()
  
 
 if __name__ == "__main__":
 
-    ip, username, password = checkInput()
-    execute(ip, username, password)
+    with open(sys.argv[1], 'r') as file:
+        commands = yaml.load(file, Loader=yaml.FullLoader)
+        ip, username, password = checkInput()
+        execute(ip, username, password)
+
+    file.close()
