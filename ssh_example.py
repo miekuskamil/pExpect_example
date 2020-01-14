@@ -46,11 +46,12 @@ def newlines():
 
 
 def execute(*args):
-    CHILD = pexpect.spawn('ssh -c aes256-cbc %s -l %s' % (first, second))
+
+    CHILD = pexpect.spawn('ssh -c aes256-cbc %s -l %s' % (args[0], args[1]))
     CHILD.logfile_read = sys.stdout.buffer
 
     CHILD.expect('.*assword:.*')
-    CHILD.sendline(third)
+    CHILD.sendline(args[2])
     CHILD.expect('.*#.*')
 
     newlines()
@@ -78,5 +79,5 @@ def execute(*args):
 
 if __name__ == "__main__":
 
-    first, second, third = checkInput()
-    execute(first, second, third)
+    ip, username, password = checkInput()
+    execute(ip, username, password)
